@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FibonacciComponent } from './components/fibonacci/fibonacci.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FibonacciComponent
   ],
   imports: [
     BrowserModule,
