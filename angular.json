@@ -18,7 +18,7 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "customWebpackConfig": {
-              "path": "custom-webpack.config.js",
+              "path": "./custom-webpack.config.js",
               "mergeStrategies": { "externals": "append" }
             },
             "outputPath": "dist/wasm-in-angular",
