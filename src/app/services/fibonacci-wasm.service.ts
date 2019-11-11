@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 import * as Module from './../../../wasm/fibonacci.js';
 import '!!file-loader?name=wasm/fibonacci.wasm!../../../wasm/fibonacci.wasm';
@@ -11,7 +10,9 @@ import '!!file-loader?name=wasm/fibonacci.wasm!../../../wasm/fibonacci.wasm';
 export class FibonacciWasmService {
   module: any;
 
-  wasmReady = new BehaviorSubject<boolean>(false);
+  public wasmReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
 
   constructor() {
     this.instantiateWasm('wasm/fibonacci.wasm');
@@ -30,7 +31,7 @@ export class FibonacciWasmService {
     const moduleArgs = {
       wasmBinary: binary,
       onRuntimeInitialized: () => {
-        this.wasmReady.next(true);
+        this.wasmReady$.next(true);
       }
     };
 
@@ -38,11 +39,7 @@ export class FibonacciWasmService {
     this.module = Module(moduleArgs);
   }
 
-  public fibonacci(input: number): Observable<number> {
-    return this.wasmReady.pipe(filter(value => value === true)).pipe(
-      map(() => {
-        return this.module._fibonacci(input);
-      })
-    );
+  public fibonacci(input: number): number {
+    return this.module._fibonacci(input);
   }
 }
