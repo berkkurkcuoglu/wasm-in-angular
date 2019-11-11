@@ -1,10 +1,40 @@
-<div class="fibonacci">
-  <input
-    type="number"
-    name="fiboNum"
-    placeholder="Please enter a number to compute"
-    ngModel
-  />
+<div class="fibonacci" *ngIf="wasmReady">
+  <h1 class="fibonacci__header">
+    Fibonacci Demo
+  </h1>
+  <div class="fibonacci__input">
+    <input
+      type="number"
+      name="fiboNum"
+      placeholder="Enter a number"
+      [(ngModel)]="fiboNum"
+    />
+  </div>
+  <div class="fibonacci__button-group">
+    <div
+      class="fibonacci__button fibonacci__button--wasm"
+      [ngClass]="{ disabled: calculating || !fiboNum }"
+      (click)="calculate('WASM')"
+    >
+      Calculate with WASM
+    </div>
+    <div
+      class="fibonacci__button fibonacci__button--js"
+      [ngClass]="{ disabled: calculating || !fiboNum }"
+      (click)="calculate('JS')"
+    >
+      Calculate with JS
+    </div>
+  </div>
+  <div class="fibonacci__result fibonacci__result--computation">
+    <span class="fibonacci__label">Result: </span>
+    <span class="fibonacci__value" *ngIf="result">{{ result }}</span>
+  </div>
+  <div class="fibonacci__result fibonacci__result--elapsed-time">
+    <span class="fibonacci__label">Elapsed Time(ms): </span>
+    <span class="fibonacci__value">{{ elapsedTime }}</span>
+  </div>
 </div>
-<div id="wasm-result">{{ wasmResult | async }}</div>
-<div id="js-result">{{ jsResult }}</div>
+<h2 class="initalizing" *ngIf="!wasmReady">
+  Initializing WASM
+</h2>
