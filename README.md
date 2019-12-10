@@ -1,27 +1,34 @@
-# WasmInAngular
+WASM Compiler Prerequisites:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.2.
+    - Ubuntu 16.04 LTS or equivalent (Windows Subsystem for Linux works too)
+    - Install python 2.7
+        sudo apt update
+        sudo apt upgrade
+        sudo apt install python2.7 python-pip
+    - Git
+    - CMake(https://cmake.org/download/)
+    - gcc(https://askubuntu.com/questions/154402/install-gcc-on-ubuntu-12-04-lts)
+    - emsdk
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install --build=Release sdk-incoming-64bit binaryen-master-64bit
+        ./emsdk activate --build=Release sdk-incoming-64bit binaryen-master-64bit
+        source ./emsdk_env.sh --build=Release
 
-## Development server
+Once you have emcc installed:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+    - Create fibonacci.c:
+        #include <emscripten.h>
 
-## Code scaffolding
+        int EMSCRIPTEN_KEEPALIVE fibonacci(int n)
+        {
+            if (n == 0 || n == 1)
+                return n;
+            else
+                return (fibonacci(n - 1) + fibonacci(n - 2));
+        }
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+    - Compile to WASM
+        emcc wasm/fibonacci.c -Os -s WASM=1 -s MODULARIZE=1 -o wasm/fibonacci.js
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    - Copy compilation output a folder called wasm or similar under your Angular app's 'src' folder.
