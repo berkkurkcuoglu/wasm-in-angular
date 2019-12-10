@@ -1,3 +1,7 @@
+Sources:
+    - Original Angular-Wasm demo tutorial -> https://malcoded.com/posts/web-assembly-angular/
+    -> WA Developer's Guide -> https://webassembly.org/getting-started/developers-guide/
+    
 WASM Compiler Prerequisites:
 
     - Ubuntu 16.04 LTS or equivalent (Windows Subsystem for Linux works too)
